@@ -13,6 +13,7 @@ def execbox(
         height=None,
         line_numbers=False,
         key=None,
+        output_container=None,
     ):
     """Display a button widget.
 
@@ -33,6 +34,8 @@ def execbox(
         An optional string to use as the unique key for the widget. If this is omitted, a key will
         be generated for the widget based on its content. Multiple widgets of the same type may not
         share the same key.
+    output_container : Streamlit container or None
+        An optional container where the output of the editor will be displayed.
 
 
     Returns
@@ -81,7 +84,11 @@ def execbox(
 
         try:
             # TODO: Add a new container and a `with` block here!
-            exec(content, local_scope)
+            if output_container is None:
+                exec(content, local_scope)
+            else:
+                with output_container:
+                    exec(content, local_scope)
         except Exception as e:
             st.exception(e)
 
